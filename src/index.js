@@ -11,12 +11,22 @@ const NAV_ITEMS = [
 
 const App = () => {
   const [selected, setSelected] = useState('app1');
+  const [subAppMessage, setSubAppMessage] = useState('');
+
+  // Example data to pass
+  const dataForSubApp1 = "Hello from Main App to SubApp1!";
+  const dataForSubApp2 = "Greetings from Main App to SubApp2!";
+
+  // Callback to receive message from sub apps
+  const handleSubAppMessage = (msg) => {
+    setSubAppMessage(msg);
+  };
 
   let Content = null;
   if (selected === 'app1') {
-    Content = <RemoteApp1 />;
+    Content = <RemoteApp1 message={dataForSubApp1} onMessage={handleSubAppMessage} />;
   } else if (selected === 'app2') {
-    Content = <RemoteApp2 />;
+    Content = <RemoteApp2 message={dataForSubApp2} onMessage={handleSubAppMessage} />;
   }
 
   return (
@@ -50,6 +60,11 @@ const App = () => {
         <Suspense fallback={<div>Loading...</div>}>
           {Content}
         </Suspense>
+        {subAppMessage && (
+          <div style={{ marginTop: 20, padding: 10, background: '#e6f7ff', borderRadius: 4 }}>
+            Message from Sub App: {subAppMessage}
+          </div>
+        )}
       </main>
     </div>
   );
